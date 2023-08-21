@@ -1,1 +1,39 @@
+import java.util.*;
+public class Palindrome{
 
+public static int reverse(int num){
+        
+ int rev = 0;
+ int temp;
+        
+ while(num!=0){
+    temp = num%10;
+    rev = rev*10+temp;
+    num = num/10;
+   }
+  
+  return rev;
+}
+     
+public static boolean isPallindrome(int num){
+    int rev = reverse(num);
+      
+      if(rev==num)
+         return true;
+      else
+          return false;
+}
+     
+public static void main(String[] args{
+   int num1;
+   System.out.println("Enter number to check palindrome:");
+     
+   Scanner sc=new Scanner(System.in);
+   num1=sc.nextInt();
+    
+   if(isPallindrome(num1))
+       System.out.println("Number is pallindrome.");
+   else
+       System.out.println("Number is not pallindrome.");
+  }
+}
