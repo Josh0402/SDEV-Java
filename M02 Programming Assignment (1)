@@ -1,1 +1,124 @@
+import java.util.GregorianCalendar;
+public class MyDate
+{
+  private int year;
+  private int month;
+  private int day;
 
+
+  public MyDate()
+  {
+    GregorianCalendar cal = new GregorianCalendar();
+    year = cal.get(GregorianCalendar.YEAR);
+    month = cal.get(GregorianCalendar.MONTH);
+    day = cal.get(GregorianCalendar.DAY_OF_MONTH);
+  }
+
+
+  public MyDate(long elapsedTime)
+  {
+    GregorianCalendar since = new GregorianCalendar(1970, 1, 1); 
+    GregorianCalendar cal = new GregorianCalendar();
+
+    cal.setTimeInMillis(since.getTimeInMillis() + elapsedTime); 
+
+    year = cal.get(GregorianCalendar.YEAR);
+    month = cal.get(GregorianCalendar.MONTH);
+    day = cal.get(GregorianCalendar.DAY_OF_MONTH);
+}
+
+
+public MyDate(int yy, int mm, int dd)
+{
+    year = yy;
+    month = mm;
+    day = dd;
+}
+
+
+public int getYear()
+{
+    return year;
+}
+
+
+public int getMonth()
+{
+    return month;
+}
+
+
+public int getDay()
+{
+    return day;
+}
+
+
+public void setDate(long elapsedTime)
+{ 
+    GregorianCalendar cal = new GregorianCalendar(); 
+    cal.setTimeInMillis(elapsedTime); 
+
+    year = cal.get(GregorianCalendar.YEAR);
+    month = cal.get(GregorianCalendar.MONTH);
+    day = cal.get(GregorianCalendar.DAY_OF_MONTH);
+}
+
+
+public String toString()
+{
+    String date = "";
+
+    if(month == 0)
+    date += "January";
+    else if(month == 1)
+    date += "February";
+    else if(month == 2)
+    date += "March";
+    else if(month == 3)
+    date += "April";
+    else if(month == 4)
+    date += "May";
+    else if(month == 5)
+    date += "June";
+    else if(month == 6)
+    date += "July";
+    else if(month == 7)
+    date += "August";
+    else if(month == 8)
+    date += "September";
+    else if(month == 9)
+    date += "October";
+    else if(month == 10)
+    date += "November";
+    else if(month == 11)
+    date += "December";
+    else
+    date += "Invalid Month! It should be 0-based month.";
+
+    date += " " + getDay(); 
+    date += ", " + getYear();
+
+    return date;
+  }
+}
+-------------------------------------------------------------------------------------------------------------------------
+// File: MyDateTest.java
+public class MyDateTest
+{
+    public static void main(String[] args)
+    {
+      MyDate date1 = new MyDate(); 
+      System.out.println("Date1: " + date1 + " (Current Date)");
+
+      MyDate date2 = new MyDate(34355555133101L);
+      System.out.println("Date2: " + date2 + " (34355555133101L since 1/1/1970 midnight)");
+
+      MyDate date3 = new MyDate(2011, 11, 11);
+      System.out.println("Date3: " + date3 + " (12/11/2011)");
+
+      MyDate date4 = new MyDate();
+      date4.setDate(561555550000L);
+      System.out.println("Date4: " + date4 + " (561555550000L)");
+    }
+}
