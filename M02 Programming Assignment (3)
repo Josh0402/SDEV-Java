@@ -1,5 +1,3 @@
-import java.util.Scanner;
-
 public class BinaryToDec {
 
     public static class BinaryFormatException extends NumberFormatException {
