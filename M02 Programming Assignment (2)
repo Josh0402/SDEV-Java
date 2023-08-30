@@ -1,11 +1,8 @@
 public class GeometricObject {
-    private String color;
+    private String color = "white";
     private boolean filled;
-
-    public GeometricObject() {
-    color = "white";
-    filled = true;
 }
+  
     public GeometricObject(String color, boolean filled) {
     this.color = color;
     this.filled = filled;
