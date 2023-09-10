@@ -1,1 +1,136 @@
+import java.math.BigInteger;
 
+import java.util.Scanner; 
+public class Number {
+        public static void main(String args[]) {
+        String n="",d="",str;
+        Scanner in = new Scanner(System.in);
+        System.out.print("Enter the first Rational Number : ");
+        str = in.nextLine();
+        int i;
+        for(i=0;i<str.length();i++) {
+        if(str.charAt(i)==' ')break;
+        n+=str.charAt(i);
+    }
+        for(i++;i<str.length();i++) {
+        d+=str.charAt(i);
+    }
+        BigInteger r1 = new BigInteger(n);
+        BigInteger r2 = new BigInteger(d);
+        System.out.print("Enter the second Rational Number : ");
+        str = in.nextLine();
+        n="";
+        d="";
+        for(i=0;i<str.length();i++) {
+        if(str.charAt(i)==' ')break;
+        n+=str.charAt(i);
+    }
+        for(i++;i<str.length();i++) {
+        d+=str.charAt(i);
+    }
+        System.out.println(r1 + " + " + r2 + " = " + r1.add(r2));
+        System.out.println(r1 + " - " + r2 + " = " + r1.subtract(r2));
+        System.out.println(r1 + " * " + r2 + " = " + r1.multiply(r2));
+        System.out.println(r1 + " / " + r2 + " = " + r1.divide(r2));
+        System.out.println(r2 + " is " + r2.doubleValue());
+    }
+}
+public class Rational extends Number implements Comparable {
+private BigInteger[] bigIntegers = new BigInteger[2];
+
+public Rational() {
+        this(new BigInteger("0"), new BigInteger("1"));
+    }
+
+        public Rational(BigInteger numerator, BigInteger denominator) {
+        BigInteger gcd = gcd(numerator, denominator);
+        bigIntegers[0] = (denominator.compareTo(BigInteger.ZERO) > 0
+        ?BigInteger.ONE :
+        new BigInteger("-1")).multiply(numerator.divide(gcd));
+        bigIntegers[1] = denominator.divide(gcd);
+    }
+
+        public BigInteger getNumerator() {
+        return bigIntegers[0];
+    }
+
+        public BigInteger getDenominator() {
+        return bigIntegers[1];
+    }
+
+public Rational add(Rational secondRational) {
+        BigInteger n = (bigIntegers[0].multiply(secondRational.getDenominator())).add(
+        bigIntegers[1].multiply(secondRational.getNumerator()));
+        BigInteger d = bigIntegers[1].multiply(secondRational.getDenominator());
+        return new Rational(n, d);
+    }
+
+        public Rational subtract(Rational secondRational) {
+        BigInteger n = (bigIntegers[0].multiply(secondRational.getDenominator())).subtract(
+        bigIntegers[1].multiply(secondRational.getNumerator()));
+        BigInteger d = bigIntegers[1].multiply(secondRational.getDenominator());
+        return new Rational(n, d);
+    }
+
+        public Rational multiply(Rational secondRational) {
+        BigInteger n = bigIntegers[0].multiply(secondRational.getNumerator());
+        BigInteger d = bigIntegers[1].multiply(secondRational.getDenominator());
+        return new Rational(n, d);
+    }
+
+        public Rational divide(Rational secondRational) {
+        BigInteger n = bigIntegers[0].multiply(secondRational.getDenominator());
+        BigInteger d = bigIntegers[1].multiply(secondRational.getNumerator());
+        return new Rational(n, d);
+    }
+
+@Override
+public String toString() {
+        if (bigIntegers[1].compareTo(BigInteger.ONE) == 0)
+        return bigIntegers[0] + "";
+        else
+        return bigIntegers[0] + "/" + bigIntegers[1];
+    }
+
+@Override
+public boolean equals(Object other) {
+        if (((this.subtract((Rational)(other))).getNumerator()).compareTo(
+        BigInteger.ZERO) == 0)
+        return true;
+        else
+        return false;
+    }
+
+@Override 
+public int intValue() {
+        return (int)doubleValue();
+    }
+
+@Override 
+public float floatValue() {
+        return (float)doubleValue();
+    }
+
+@Override
+public double doubleValue() {
+        return this.getNumerator().doubleValue() /
+        this.getDenominator().doubleValue();
+    }
+
+@Override
+public long longValue() {
+        return (long)doubleValue();
+    }
+
+@Override
+public int compareTo(Object o) {
+        BigInteger zero = BigInteger.ZERO;
+        BigInteger n = this.subtract((Rational)o).getNumerator();
+        if (n.compareTo(zero) > 0)
+        return 1;
+        else if (n.compareTo(zero) < 0)
+        return -1;
+        else
+        return 0;
+    }
+}
