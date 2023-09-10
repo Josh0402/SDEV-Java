@@ -1,1 +1,59 @@
+import java.util.Objects;
 
+public class Circle extends GeometricObject implements Comparable<Circle> {
+    private double radius;
+    }
+
+    public Circle() {
+    }
+
+    public Circle(double radius) {
+        this.radius = radius;
+    }
+
+    public double getRadius() {
+        return radius;
+    }
+
+    public void setRadius(double radius) {
+        this.radius = radius;
+    }
+
+    @Override
+    public int compareTo(Circle other) {
+        return Double.compare(radius, other.radius);
+    }
+
+    @Override
+        public boolean equals(Object obj) {
+            if(obj instanceof Circle){
+            Circle other = (Circle)obj;
+            if(radius == other.radius)
+            return true;
+            return false;
+        }
+    }
+}
+
+public class CircleTest {
+        public static void main(String[] args) {
+                Circle c1 = new Circle(9.5);
+                Circle c2 = new Circle();
+                c2.setRadius(12.3);
+                System.out.println(c1.toString());
+                System.out.println(c2.toString());
+                System.out.println();
+                System.out.println("is C1 == C2 ? "+ c1.equals(c2));
+                int com = c1.compareTo(c2);
+                System.out.print("\nCompare: ");
+            if(com == 0){
+                System.out.println("C1 == C2");
+        }   
+            else if(com > 1){
+                system.out.println("C1 > C2");
+        }
+             else{
+                System.out.println("C1 < C2");
+        }
+    }
+}
