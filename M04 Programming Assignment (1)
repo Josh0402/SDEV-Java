@@ -1,1 +1,48 @@
+import java.util.Scanner;
+import java.util.Stack;
+
+public class M04 {
+
+    public static void main(String[] args) 
+    {
+        Scanner in = new Scanner(System.in);
+        System.out.print("Enter filename: ");
+        String filename = in.nextLine();
+        try {
+            Scanner fin = new Scanner(new FileInputStream(filename));
+            String line;
+            Stack<Character> stack = new Stack<>();
+            char ch;
+            while(fin.hasNextLine()) {
+                line = fin.nextLine();
+                for(int i = 0; i < line.length(); ++i) {
+                    ch = line.charAt(i);
+                    if(ch == '[' || ch == '(' || ch == '{') {
+                        stack.push(ch);
+                    } else if(ch == ']') {
+                        if(stack.isEmpty() || stack.pop() != '[') {
+                            System.out.println("File does not have matching symbols");
+                            System.exit(1);
+                        }
+                    } else if(ch == '}') {
+                        if(stack.isEmpty() || stack.pop() != '{') {
+                            System.out.println("File does not have matching symbols");
+                            System.exit(1);
+                        }
+                    } else if(ch == ')') {
+                        if(stack.isEmpty() || stack.pop() != '(') {
+                            System.out.println("File does not have matching symbols");
+                            System.exit(1);
+                        }
+                    }
+                }
+            }
+            System.out.println("File has matching symbols");
+            fin.close();
+        } catch (FileNotFoundException e) {
+            e.printStackTrace();
+        }
+    }
+
+}
 
