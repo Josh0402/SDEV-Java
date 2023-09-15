@@ -1,87 +1,125 @@
 import java.util.Scanner;
 
-public class CreditCard {
-
-    public static boolean isValid(long number){
-        if(getSize(number) == 16){
+public class M01
+{
+    public static boolean isValid(long number)
+    {
+        int numSize = getSize(number);
+        if(numSize != 13 && numSize != 16)
+            return false;
+            if(prefixMatched(number, 4) == false && prefixMatched(number, 5) == false && prefixMatched(number, 37) == false && prefixMatched(number, 6) == false )
+            return false;
+        }
             int evenSum = sumOfDoubleEvenPlace(number);
             int oddSum = sumOfOddPlace(number);
-            int total = oddSum + evenSum;
-            return total % 10 == 0;
+            int total = evenSum + oddSum;
         }
-        return false;
+        if(total % 10 == 0)
+            return true;
+            else{
+                return false;
+            }
+        }
     }
 
-    public static int sumOfDoubleEvenPlace(long number){
-        int sum = 0, count = 0;
-        while(number > 0){
-            ++count;
-            if(count % 2 == 0){
-                sum += getDigit((int) (2 * (number % 10)));
+    public static int sumOfDoubleEvenPlace(long number)
+    {
+            int sum = 0;
+            boolean flag = false;
+            int rem;
+            while(number > 0)
+        {
+            if(flag)
+            rem =(int) (number % 10);
+            sum += getDigit( 2 * rem);
+            flag = false;
+        }
+            else{
+                flag = true;
             }
             number /= 10;
-        }
-        return sum;
+            return sum;
+        }  
     }
 
-    public static int getDigit(int number){
-        int sum = 0;
-        while(number > 0){
-            sum += number % 10;
-            number /= 10;
-        }
-        return sum;
-    }
-
-    public static int sumOfOddPlace(long number){
-        int sum = 0, count = 0;
-        while(number > 0){
-            ++count;
-            if(count % 2 == 1){
-                sum += number % 10;
-            }
-            number /= 10;
-        }
-        return sum;
-    }
-
-    public static boolean prefixMatched(long number, int d){
-        int l1 = getSize(number);
-        int l2 = getSize(d);
-        return Math.floor(number / (Math.pow(10, l1 - l2))) == d;
-    }
-
-    public static int getSize(long d){
-        int count = 0;
-        while(d > 9){
-            ++count;
-            d /= 10;
-        }
-        return count + 1;
-    }
-
-    public static long getPrefix(long number, int k){
-        if(getSize(number) < k){
+    public static int getDigit(int number)
+    {
+            if(number <10)
             return number;
         }
-        else{
-            int l = getSize(number);
-            return (long) Math.floor(number / (Math.pow(10, l - k)));
+            else{
+                if(number % 9 == 0)
+                return 9;
+            }
+            else{
+                return number % 9;
+            }
+        }
+    }
+    
+    public static int sumOfOddPlace(long number)
+    {
+            boolean flag = true;
+            int sum = 0;
+            while(number > 0)
+        {
+            if(flag)
+            sum += (number % 10);
+            flag = false;
+        }
+            else{
+                flag = true;
+            }
+            number /= 10;}
+            return sum;
         }
     }
 
-
-    public static void main(String[] args){
-        Scanner in = new Scanner(System.in);
-        long number;
-        System.out.print("Enter a credit card number as a long integer: ");
-        number = in.nextLong();
-        if(isValid(number)){
-            System.out.println(number + " is valid");
+    public static boolean prefixMatched(long number, int d)
+    {
+            int sizePre = getSize(d);
+            return getPrefix(number,sizePre) == d;
         }
-        else{
-            System.out.println(number + " is invalid");
+            public static int getSize(long d)
+        {
+            int size = 0;
+            while(d > 0)
+            {
+                d /= 10;
+                size++;
+                return size;
+            }
         }
     }
 
-}
+    public static long getPrefix(long number, int k)
+    {
+            int sizeNum = getSize(number);
+            if(sizeNum <= k)
+            return number;
+        }
+            else{
+                while(sizeNum != k)
+            {
+                    number /= 10;
+                    sizeNum--;
+                    return number;
+            }
+        }
+    }
+
+    public static void main(String args[])
+    {
+            Scanner in = new Scanner(System.in);
+            System.out.println("Enter a credit card number as a long integer: ");
+            long number = in.nextLong();
+            if(isValid(number))
+                System.out.println(number + " is valid");
+        }
+            else{     
+                System.out.println(number + " is invalid");
+            }
+        }
+    
+    }
+
