@@ -1,1 +1,76 @@
+import javafx.application.Application;
+import javafx.stage.Stage;
+import javafx.scene.Scene;
+import javafx.scene.control.Label;
+import javafx.scene.text.Text;
+import javafx.scene.control.ScrollBar;
+import javafx.scene.paint.Color;
+import javafx.scene.layout.BorderPane;
+import javafx.scene.layout.StackPane;
+import javafx.scene.layout.GridPane;
+import javafx.geometry.Pos;
+import javafx.geometry.Insets;
+import javafx.scene.text.Font;
 
+public class M05 extends Application {
+        Text text = new Text("Show Colors");
+        ScrollBar sbRed = new ScrollBar();
+        ScrollBar sbGreen = new ScrollBar();
+        ScrollBar sbBlue = new ScrollBar();
+        ScrollBar sbOpacity = new ScrollBar();
+        
+        @Override 
+        public void start(Stage primaryStage) {
+                text.setFont(new Font("Arial", 30));
+                StackPane paneForText = new StackPane(text);
+                paneForText.setPadding(new Insets(20, 10, 5, 10));
+
+                sbRed.setMin(0.0);
+                sbRed.setMax(1.0);
+                sbRed.setPrefHeight(20);
+                sbGreen.setMin(0.0);
+                sbGreen.setMax(1.0);
+                sbGreen.setPrefHeight(20);
+                sbBlue.setMin(0.0);
+                sbBlue.setMax(1.0);
+                sbBlue.setPrefHeight(20);
+                sbOpacity .setMin(0.0);
+                sbOpacity .setMax(1.0);
+                sbOpacity .setPrefHeight(20);
+
+                sbRed.valueProperty().addListener(ov -> setColor());
+                sbGreen.valueProperty().addListener(ov -> setColor());
+                sbBlue.valueProperty().addListener(ov -> setColor());
+                sbOpacity .valueProperty().addListener(ov -> setColor());
+                sbOpacity .setValue(1);
+
+
+                GridPane paneForScrollBars = new GridPane();
+                paneForScrollBars.setAlignment(Pos.CENTER);
+                paneForScrollBars.setVgap(5);
+                paneForScrollBars.setHgap(5);
+                paneForScrollBars.add(new Label("Red"), 0, 0);
+                paneForScrollBars.add(sbRed, 1, 0);
+                paneForScrollBars.add(new Label("Green"), 0, 1);
+                paneForScrollBars.add(sbGreen, 1, 1);
+                paneForScrollBars.add(new Label("Blue"), 0, 2);
+                paneForScrollBars.add(sbBlue, 1, 2);
+                paneForScrollBars.add(new Label("Opacity"), 0, 3);
+                paneForScrollBars.add(sbOpacity , 1, 3);
+
+                BorderPane pane = new BorderPane();
+                pane.setTop(paneForText);
+                pane.setCenter(paneForScrollBars);
+
+                Scene scene = new Scene(pane, 250, 250);
+                primaryStage.setTitle("M05_03"); 
+                primaryStage.setScene(scene); 
+                primaryStage.show(); 
+        }
+
+        private void setColor() {
+                
+                text.setFill(new Color(sbRed.getValue(), sbGreen.getValue(), 
+                                sbBlue.getValue(), sbOpacity .getValue()));
+        }
+}
