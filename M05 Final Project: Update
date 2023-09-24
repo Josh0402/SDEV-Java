@@ -1,1 +1,144 @@
+// From UML I changed in the savings class: totalPay to Transfer as this would allow me to combine the two and let the user change how much is saved or spent, then shows total output of both.
+import java.util.*;
 
+// declarying multiple functions to be used in the code
+public class Job {
+// Declared variables as private per comments on UML
+    private String userName;
+    private String workTitle;
+    private int yearsWorked;
+    private int hourlyWage;
+    private double savingsBalance;
+    private double spendingBalance;
+    public Job(String userName, String workTitle, int yearsWorked, int hourlyWage, double savingsBalance, double spendingBalance) {
+        this.userName = userName;
+        this.workTitle = workTitle;
+        this.yearsWorked = yearsWorked;
+        this.hourlyWage = hourlyWage;
+        this.savingsBalance = savingsBalance;
+        this.spendingBalance = spendingBalance;
+    }
+
+    // To have the user verify all his information matches
+    public static Job authenticate(Job[] acc, String userName, String workTitle, int yearsWorked) {
+        for(Job a: acc) {
+            if(a.userName.equals(userName) && a.workTitle.equals(workTitle) && a.yearsWorked == yearsWorked)
+                return a;
+        }
+        return null;
+    }
+
+    // Here shows the wages between Hourly, Monthly, and Annually
+    public void wage(double amount) {
+        hourlyWage = 25;
+
+        System.out.print("Hourly wage is: ");
+        System.out.println(hourlyWage * 25);
+
+        System.out.print("Annual wage is: ");
+        System.out.println(hourlyWage * 25 * 50);
+
+        System.out.print("Monthly wage is: ");
+        System.out.println((hourlyWage * 25 * 50) / 12.0);
+    }
+
+    // Has the user declare how much money he wants to take out and spend
+    public void Spending(double amount) {
+        if(amount <= savingsBalance) {
+            spendingBalance -= amount;
+            System.out.println("Withdraw successful. Current balance: "+spendingBalance);
+        } else {
+            System.out.println("Withdraw amount exceeds the total balance in the account");
+        }
+    }
+
+    // Has the user declare how much money he wants to put in to save
+    public void Savings(double amount) {
+        savingsBalance += amount;
+        System.out.println("Deposit successful. Current balance: "+savingsBalance);
+    }
+
+    // Function to transfer money in between each savings and their spendings acc
+    public void transfer(double amount, Job obj) {
+        if(amount <= savingsBalance) {
+            spendingBalance -= amount;
+            obj.savingsBalance += amount;
+            System.out.println("Transfer Successful");
+        } else {
+            System.out.println("Transfer amount exceeds your account balance");
+        }
+    }
+
+    public double savingsBalance() {
+        return savingsBalance;
+    }
+
+    public double spendingBalance() {
+        return spendingBalance;
+    }
+}
+
+// Test class to have user correlate all of the information they provided in their job
+class TestJob {
+    public static void main(String[] args) {
+        Job acc[] = new Job[5];
+        acc[0] = new Job("Joshua","Doctor",1,25,75000.00,100.00);
+        acc[1] = new Job("Scot","Engineer",2,25,80000.00,100.00);
+        acc[2] = new Job("Staton","Actor",3,25,85000.00,100.00);
+        acc[3] = new Job("John","Teacher",4,25,90000.00,100.00);
+        acc[4] = new Job("Josh","Musician",5,25,95000.00,100.00);
+        try (Scanner sc = new Scanner(System.in)) {
+            System.out.println("Enter User name: ");
+            String userName = sc.nextLine();
+            System.out.println("Enter Users Job Title: ");
+            String workTitle = sc.nextLine();
+            System.out.println("Enter Users years worked: ");
+            int yearsWorked = sc.nextInt();
+            Job a = Job.authenticate(acc,userName,workTitle,yearsWorked);
+            if(a!=null) {
+                while(true) {
+                    System.out.println("1. Spending\n"+
+                                       "2. Savings\n"+
+                                       "3. Transfer\n"+
+                                       "4. Savings Balance\n"+
+                                       "5. Spending Balance\n"+
+                                       "6. Logout");
+                    int choice = sc.nextInt();
+                    switch(choice) {
+                    case 1:
+                        System.out.println("Enter amount you want to spend: ");
+                        double amount = sc.nextDouble();
+                        a.Spending(amount);
+                        break;
+                    case 2:
+                        System.out.println("Enter amount to save: ");
+                        amount = sc.nextDouble();
+                        a.Savings(amount);
+                        break;
+                    case 3:
+                        System.out.println("Enter acc with years worked to which you want to transfer: ");
+                        yearsWorked = sc.nextInt();
+                        System.out.println("Enter the amount: ");
+                        amount = sc.nextDouble();
+                        a.transfer(amount,acc[yearsWorked-1]);
+                        break;
+                    case 4:
+                        System.out.println("Current savings acc balance: "+a.savingsBalance());
+                        break;
+                    case 5:
+                        System.out.println("Current spendings acc balance: "+a.spendingBalance());
+                        break;
+                    case 6:
+                        System.exit(0);
+                    default:
+                        System.out.println("Invalid input");
+                    }
+
+
+                }
+            } else {
+                System.out.println("User not found.");
+            }
+        }
+    }
+}
