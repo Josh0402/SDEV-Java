@@ -1,1 +1,55 @@
+//GUI application to test users wage and overall balance
+import javax.swing.*;
+import java.awt.*;
+import java.awt.event.ActionEvent;
+import java.awt.event.ActionListener;
 
+public class JobGUI extends JFrame {
+    private JButton calculateWageButton;
+    private JButton viewBalancesButton;
+    //Here the user will establish their JFrame
+    public JobGUI() {
+        setTitle("User's Account");
+        setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
+        setSize(400, 200);
+        setLocationRelativeTo(null); 
+
+        //Has the user set up the buttons to be used
+        calculateWageButton = new JButton("Calculate Wage");
+        viewBalancesButton = new JButton("View Balances");
+        //Event one has the user calculate their wage amount
+        calculateWageButton.addActionListener(new ActionListener() {
+            @Override
+            public void actionPerformed(ActionEvent e) {
+                JOptionPane.showMessageDialog(null, "Calculating Wage...");
+            }
+        });
+        //Event two has the user view their overall account balance
+        viewBalancesButton.addActionListener(new ActionListener() {
+            @Override
+            public void actionPerformed(ActionEvent e) {
+                JOptionPane.showMessageDialog(null, "Viewing Balances...");
+            }
+        });
+
+        //Holds all of the variables together
+        JPanel buttonPanel = new JPanel();
+        buttonPanel.setLayout(new FlowLayout());
+        buttonPanel.add(calculateWageButton);
+        buttonPanel.add(viewBalancesButton);
+
+        getContentPane().setLayout(new BorderLayout());
+        getContentPane().add(buttonPanel, BorderLayout.CENTER);
+
+        setVisible(true);
+    }
+
+    public static void main(String[] args) {
+        SwingUtilities.invokeLater(new Runnable() {
+            @Override
+            public void run() {
+                new JobGUI();
+            }
+        });
+    }
+}
