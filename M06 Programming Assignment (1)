@@ -1,1 +1,176 @@
+import javax.swing.*;
+import java.awt.*;
+import java.awt.event.*;
+import java.sql.*;
+
+public class Main extends JApplet {
+    private JTextField JID = new JTextField(9);
+    private JTextField JLName = new JTextField(9);
+    private JTextField JFName = new JTextField(9);
+    private JTextField JMI = new JTextField(3);
+    private JTextField JAddress = new JTextField(20);
+    private JTextField JCity = new JTextField(20);
+    private JTextField JState = new JTextField(2);
+    private JTextField JPh = new JTextField(10);
+    private JTextField JEmail = new JTextField(40);
+    private JButton JView = new JButton("View");
+    private JButton JInsert = new JButton("Insert");
+    private JButton jbtUpdate = new JButton("Update");
+    private JButton JClear = new JButton("Clear");
+    private PreparedStatement ps;
+    private Connection conn;
+
+    @Override
+    public void init() {
+        try {
+            Class.forName("com.mysql.cj.jdbc.Driver");
+            System.out.println("Loaded");
+            conn = DriverManager.getConnection("jdbc:mysql://localhost/M06-1", "Joshua", "Joshua14Ivy");
+            System.out.println("Connected");
+            conn.setAutoCommit(true);
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
+
+        JPanel jPanel1 = new JPanel();
+        jPanel1.add(new JLabel("ID"));
+        jPanel1.add(JID);
+        jPanel1.add(new JLabel("Last Name"));
+        jPanel1.add(JLName);
+        jPanel1.add(new JLabel("First Name"));
+        jPanel1.add(JFName);
+        jPanel1.add(new JLabel("mi"));
+        jPanel1.add(JMI);
+        jPanel1.add(new JLabel("Address"));
+        jPanel1.add(JAddress);
+        jPanel1.add(new JLabel("City"));
+        jPanel1.add(JCity);
+        jPanel1.add(new JLabel("State"));
+        jPanel1.add(JState);
+        jPanel1.add(new JLabel("Telephone"));
+        jPanel1.add(JPh);
+        jPanel1.add(new JLabel("Email"));
+        jPanel1.add(JEmail);
+        jPanel1.add(JView);
+        jPanel1.add(JInsert);
+        jPanel1.add(jbtUpdate);
+        jPanel1.add(JClear);
+        add(jPanel1, BorderLayout.CENTER);
+
+        JView.addActionListener(new ActionListener() {
+            public void actionPerformed(ActionEvent e) {
+                String lastName = "", firstName = "", mi = "", address = "", city = "", state = "", ph = "", email = "";
+                int id = Integer.parseInt(JID.getText());
+                System.out.println("ID chosen: " + id);
+                try {
+                    String query = "Select lastName, firstName, mi, address, city, state, telephone, email From Staff Where ID = ?";
+                    ps = conn.prepareStatement(query);
+                    ps.setInt(1, id);
+                    ResultSet rs = ps.executeQuery();
+                    while (rs.next()) {
+                        lastName = rs.getString(1);
+                        firstName = rs.getString(2);
+                        mi = rs.getString(3);
+                        address = rs.getString(4);
+                        city = rs.getString(5);
+                        state = rs.getString(6);
+                        ph = rs.getString(7);
+                        email = rs.getString(8);
+                    }
+                    JLName.setText(lastName);
+                    JFName.setText(firstName);
+                    JMI.setText(mi);
+                    JAddress.setText(address);
+                    JCity.setText(city);
+                    JState.setText(state);
+                    JPh.setText(ph);
+                    JEmail.setText(email);
+                } catch (SQLException ex) {
+                    ex.printStackTrace();
+                }
+            }
+        });
+
+        JInsert.addActionListener(new ActionListener() {
+            public void actionPerformed(ActionEvent e) {
+                int id = Integer.parseInt(JID.getText());
+                String lastName = JLName.getText();
+                String firstName = JFName.getText();
+                String mi = JMI.getText();
+                String add = JAddress.getText();
+                String city = JCity.getText();
+                String state = JState.getText();
+                String ph = JPh.getText();
+                String email = JEmail.getText();
+                try {
+                    String query = "Insert To Staff (ID, lastName, firstName, mi, address, city, state, telephone, email) Variables (?, ?, ?, ?, ?, ?, ?, ?, ?)";
+                    ps = conn.prepareStatement(query);
+                    ps.setInt(1, id);
+                    ps.setString(2, lastName);
+                    ps.setString(3, firstName);
+                    ps.setString(4, mi);
+                    ps.setString(5, add);
+                    ps.setString(6, city);
+                    ps.setString(7, state);
+                    ps.setString(8, ph);
+                    ps.setString(9, email);
+                    ps.execute();
+                    System.out.println("Completed.");
+                } catch (Exception ea) {
+                    ea.printStackTrace();
+                }
+            }
+        });
+
+        jbtUpdate.addActionListener(new ActionListener() {
+            public void actionPerformed(ActionEvent e) {
+                int id = Integer.parseInt(JID.getText());
+                String lastName = JLName.getText();
+                String firstName = JFName.getText();
+                String mi = JMI.getText();
+                String add = JAddress.getText();
+                String city = JCity.getText();
+                String state = JState.getText();
+                String ph = JPh.getText();
+                String email = JEmail.getText();
+                try {
+                    String query = "Update Staff Set lastName = ?, firstName = ?, mi = ?, address = ?, city = ?, state = ?, telephone = ?, email = ? Where ID = ?";
+                    ps = conn.prepareStatement(query);
+                    ps.setString(1, lastName);
+                    ps.setString(2, firstName);
+                    ps.setString(3, mi);
+                    ps.setString(4, add);
+                    ps.setString(5, city);
+                    ps.setString(6, state);
+                    ps.setString(7, ph);
+                    ps.setString(8, email);
+                    ps.setInt(9, id);
+                    ps.executeUpdate();
+                    System.out.println("Completed.");
+                } catch (Exception es) {
+                    es.printStackTrace();
+                }
+            }
+        });
+
+        JClear.addActionListener(new ActionListener() {
+            public void actionPerformed(ActionEvent e) {
+                JID.setText("");
+                JLName.setText("");
+                JFName.setText("");
+                JMI.setText("");
+                JAddress.setText("");
+                JCity.setText("");
+                JState.setText("");
+                JPh.setText("");
+                JEmail.setText("");
+                try {
+                    st.execute("Delete From Staff");
+                } catch (Exception et) {
+                    et.printStackTrace();
+                }
+            }
+        });
+    }
+}
 
