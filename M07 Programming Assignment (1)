@@ -1,1 +1,71 @@
+import java.io.IOException;
+import java.io.PrintWriter;
+
+import javax.servlet.ServletException;
+import javax.servlet.annotation.WebServlet;
+import javax.servlet.http.HttpServlet;
+import javax.servlet.http.HttpServletRequest;
+import javax.servlet.http.HttpServletResponse;
+
+import loan.Loan;
+
+@WebServlet("/M07")
+public class M07 extends HttpServlet {
+    private static final long serialVersionUID = 1L;
+
+    public M07() {
+        super();
+    }
+
+    protected void doGet(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
+        try {
+            float loanAmount = Float.parseFloat(request.getParameter("loanAmount"));
+            float interestRate = Float.parseFloat(request.getParameter("interestRate"));
+            int noOfYears = Integer.parseInt(request.getParameter("noOfYears"));
+
+            PrintWriter out = response.getWriter();
+            out.println("<html><head><title>Loan Payment Result</title></head><body>");
+            out.println("<h1>Loan Payment Result</h1>");
+            out.println("<p>Loan Amount: $" + loanAmount + "</p>");
+            out.println("<p>Annual Interest Rate: " + interestRate + "%</p>");
+            out.println("<p>Number of Years: " + noOfYears + "</p>");
+
+            Loan loan = new Loan(interestRate, noOfYears, loanAmount);
+
+            out.println("<p>Monthly Payment: $" + loan.getMonthlyPayment() + "</p>");
+            out.println("<p>Total Payment: $" + loan.getTotalPayment() + "</p>");
+
+            out.println("</body></html>");
+        } catch (NumberFormatException e) {
+            response.getWriter().println("Invalid input. Please enter valid numbers.");
+        }
+    }
+
+    protected void doPost(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
+        doGet(request, response);
+    }
+}
+
+----------------------------------------------------------------------------------------------------------------------------------------------
+<!DOCTYPE html>
+<html>
+<head>
+    <meta charset="UTF-8">
+    <title>Loan Payment Calculator</title>
+</head>
+<body>
+    <h1>Compute Loan Payment</h1>
+    <form method="get" action="M07">
+        <label for="loanAmount">Loan Amount</label>
+        <input type="text" id="loanAmount" name="loanAmount" required><br>
+        <label for="interestRate">Annual Interest Rate</label>
+        <input type="text" id="interestRate" name="interestRate" required><br>
+        <label for="noOfYears">Number of Years</label>
+        <input type="text" id="noOfYears" name="noOfYears" size="3" required><br><br>
+        <input type="submit" value="Compute Loan Payment">
+        <input type="reset" value="Reset">
+    </form>
+</body>
+</html>
+
 
