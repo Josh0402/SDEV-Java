@@ -1,1 +1,66 @@
+//Fixed code with comments showing where the code had errors and fixed them
+import java.util.ArrayList;
+import stringCollections.StoreStrings;
 
+public class TestStoreStrings {
+
+    public static void main(String[] args) {
+        ArrayList<String> states = new ArrayList<String>();    //Error 1
+        states.add("Virginia");
+        states.add("New York");                     //Error 2
+        states.add("Michigan");
+        states.add("Indiana");
+        states.add("Missouri");
+        states.add("Indiana");
+
+        states.sort(null);
+
+        for(String state:states) {
+            System.out.println(state);     //Error 3
+        }
+
+        if (StoreStrings.duplicateString(states)) {
+            System.out.println("Error! Contains more than one entry of the same state in the list. Must have only one entry for the state in the list");
+        } else {
+            System.out.println(StoreStrings.count(states));
+        }
+
+
+    }
+
+}
+//----------------------------------------------------
+package stringCollections;
+
+import java.util.ArrayList;
+
+public class StoreStrings {
+
+    public static int count(ArrayList <String> words) { //Error 4
+        int lSize = 0;
+        for(String i : words) {
+            lSize++;
+        }
+
+        return lSize;
+
+    }
+
+    public static boolean duplicateString(ArrayList <String> words) {
+        boolean isDuplicateString = false;    //Error 5
+
+        ArrayList<String> items = new ArrayList<String>();   //Error 6
+
+        for(String word : words) {
+            if (items.contains(word)) {
+                isDuplicateString = true;            //Error 7
+            } else {
+                items.add(word);
+            }
+        }
+
+
+        return isDuplicateString;
+
+    }
+}
